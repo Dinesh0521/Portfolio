@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinesh Kumar — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#0a0a0f;--ink2:#1a1a2e;--paper:#f5f4ef;
+    --accent:#ff4d00;--accent2:#ffbe0b;--teal:#00c9a7;--blue:#4361ee;--white:#ffffff;
+    --font-display:'Playfair Display',serif;
+    --font-body:'Space Grotesk',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--ink);color:var(--paper);overflow-x:hidden;cursor:auto}
+  .cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;mix-blend-mode:difference;pointer-events:none}
+  .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:none;will-change:left,top,width,height;mix-blend-mode:difference;pointer-events:none}
+  body:has(a:hover) .cursor,body:has(button:hover) .cursor,body:has(input:hover) .cursor,.cursor.active{width:20px;height:20px}
+  body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring,body:has(input:hover) .cursor-ring{width:60px;height:60px;border-color:var(--accent2)}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.35}
+  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--ink2)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
+  @keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes floatBob{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(calc(-50% - 18px)) rotate(2.5deg)}}
+  @keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  .reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1)}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0.25rem 4rem;backdrop-filter:blur(20px);background:rgba(10,10,15,0.08);border-bottom:1px solid rgba(255,255,255,0.06);transition:all 0.3s}
+  .nav-logo{font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--white);cursor:pointer;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--blue));display:flex;align-items:center;justify-content:center;transition:all 0.25s;border:none;outline:none;flex-shrink:0}
+  .nav-logo:hover{transform:scale(1.1);box-shadow:0 0 0 8px rgba(255,77,0,0.15)}
+  .nav-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+  .hero-card-avatar img,.resume-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+  .nav-initials{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--white);display:inline-block}
+  .nav-links{display:flex;gap:2.5rem;list-style:none}
+  .nav-links a{font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,244,239,0.6);text-decoration:none;transition:color 0.2s;position:relative;padding-bottom:4px}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--accent);transition:width 0.3s}
+  .nav-links a:hover{color:var(--paper)}.nav-links a:hover::after{width:100%}
+  .nav-cta{background:var(--accent);color:var(--white);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.6rem 1.4rem;border-radius:40px;text-decoration:none;transition:all 0.25s;font-weight:600}
+  .nav-cta:hover{background:var(--accent2);color:var(--ink);transform:translateY(-1px)}
+
+  /* RESUME MODAL */
+  .resume-overlay{position:fixed;inset:0;z-index:9000;background:rgba(5,5,10,0.88);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity 0.35s}
+  .resume-overlay.open{opacity:1;pointer-events:all}
+  .resume-modal{background:#0f0f1a;border:1px solid rgba(255,255,255,0.1);border-radius:24px;width:100%;max-width:740px;max-height:90vh;overflow-y:auto;padding:0;transform:translateY(30px) scale(0.97);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
+  .resume-overlay.open .resume-modal{transform:translateY(0) scale(1)}
+  .resume-header{background:linear-gradient(135deg,rgba(255,77,0,0.14),rgba(67,97,238,0.14));border-bottom:1px solid rgba(255,255,255,0.07);padding:2.5rem 2.5rem 2rem;position:relative}
+  .resume-close{position:absolute;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:var(--paper);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .resume-close:hover{background:var(--accent);border-color:var(--accent)}
+  .resume-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--blue));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:white;margin-bottom:1.2rem;box-shadow:0 8px 24px rgba(255,77,0,0.3)}
+  .resume-name{font-family:var(--font-display);font-size:2rem;font-weight:700;margin-bottom:0.25rem}
+  .resume-tagline{color:rgba(245,244,239,0.5);font-size:0.9rem;margin-bottom:1rem}
+  .resume-contact-row{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.8rem}
+  .resume-contact-chip{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;color:rgba(245,244,239,0.7);font-family:var(--font-mono)}
+  .resume-body{padding:2rem 2.5rem}
+  .resume-section{margin-bottom:2.2rem}
+  .resume-sec-title{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem}
+  .resume-sec-title::after{content:'';flex:1;height:1px;background:rgba(255,77,0,0.2)}
+  .resume-summary{font-size:0.92rem;line-height:1.82;color:rgba(245,244,239,0.72)}
+  .resume-exp-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:0.8rem;border-left:3px solid var(--accent)}
+  .resume-exp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.5rem}
+  .resume-exp-role{font-weight:600;font-size:0.95rem}
+  .resume-exp-company{font-size:0.82rem;color:var(--accent);margin-top:0.15rem}
+  .resume-exp-date{font-family:var(--font-mono);font-size:0.7rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.2);color:var(--teal);padding:0.25rem 0.6rem;border-radius:6px;white-space:nowrap}
+  .resume-exp-desc{font-size:0.84rem;line-height:1.75;color:rgba(245,244,239,0.6)}
+  .resume-skills-grid{display:flex;flex-wrap:wrap;gap:0.5rem}
+  .resume-skill-tag{font-family:var(--font-mono);font-size:0.74rem;background:rgba(67,97,238,0.1);border:1px solid rgba(67,97,238,0.22);color:#8b9ff7;padding:0.3rem 0.75rem;border-radius:8px}
+  .resume-edu-item{display:flex;gap:1rem;align-items:flex-start;margin-bottom:0.8rem}
+  .resume-edu-dot{width:10px;height:10px;border-radius:50%;background:var(--accent2);margin-top:5px;flex-shrink:0}
+  .resume-edu-deg{font-weight:600;font-size:0.92rem;margin-bottom:0.2rem}
+  .resume-edu-inst{font-size:0.82rem;color:rgba(245,244,239,0.5)}
+  .offer-badge{background:linear-gradient(135deg,rgba(255,190,11,0.1),rgba(67,97,238,0.08));border:1px solid rgba(255,190,11,0.3);border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:0.8rem;display:flex;align-items:flex-start;gap:1rem}
+  .offer-badge-icon{font-size:1.6rem;flex-shrink:0}
+  .offer-badge-title{font-weight:600;font-size:0.92rem;margin-bottom:0.2rem;color:var(--accent2)}
+  .offer-badge-sub{font-size:0.8rem;color:rgba(245,244,239,0.55);line-height:1.6}
+  .offer-badge-date{font-family:var(--font-mono);font-size:0.7rem;background:rgba(255,190,11,0.1);border:1px solid rgba(255,190,11,0.2);color:var(--accent2);padding:0.2rem 0.55rem;border-radius:6px;display:inline-block;margin-top:0.4rem}
+  .resume-cta{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,var(--accent),#ff7733);color:white;padding:0.8rem 1.8rem;border-radius:40px;font-weight:600;font-size:0.85rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;margin-top:0.5rem}
+  .resume-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,77,0,0.35)}
+
+  /* HERO */
+  #hero{min-height:65vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:5rem 4rem 0 4rem}
+  .hero-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(10,10,15,0.88),rgba(10,10,15,0.88)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2326364f'/%3E%3Cstop offset='1' stop-color='%230c0f1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='800' fill='url(%23g)'/%3E%3Crect x='260' y='520' width='680' height='40' rx='20' fill='%23232f44'/%3E%3Crect x='330' y='430' width='540' height='110' rx='24' fill='%2330476c'/%3E%3Crect x='410' y='380' width='380' height='70' rx='18' fill='%23eaecee'/%3E%3Crect x='475' y='405' width='250' height='12' rx='6' fill='%2308243f'/%3E%3Crect x='470' y='440' width='260' height='8' rx='4' fill='%232c3e5c'/%3E%3Crect x='470' y='460' width='260' height='8' rx='4' fill='%232c3e5c'/%3E%3Ccircle cx='600' cy='260' r='70' fill='%23f4c291'/%3E%3Cpath d='M520 320c0-40 30-75 80-75s80 35 80 75v55h-160v-55z' fill='%231e2a46'/%3E%3Crect x='540' y='340' width='120' height='130' rx='56' fill='%23374d70'/%3E%3Cpath d='M520 360c0-14 30-18 40-14s20 14 40 14 40 0 40 0 0 40-40 40-80-8-80-26z' fill='%23202634'/%3E%3Cpath d='M560 240c0-18 15-35 35-35s35 17 35 35v10h-70v-10z' fill='%231f2433'/%3E%3Cpath d='M580 240c4-12 8-16 16-16s12 4 16 16' stroke='%231b2b47' stroke-width='4' fill='none'/%3E%3C/svg>");background-repeat:no-repeat;background-size:contain;background-position:center center;}
+  /* mountain background for all sections except hero (35-40% visibility) */
+  section:not(#hero)::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url('./mountain.svg');background-repeat:no-repeat;background-position:center bottom;background-size:cover;opacity:0.18}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 70% 70% at 60% 50%,black 30%,transparent 100%)}
+  .hero-content{position:relative;z-index:2;max-width:820px}
+  h1.hero-name{font-family:var(--font-display);font-size:clamp(3.5rem,8vw,7rem);line-height:1.15;margin-top:1.4rem;margin-bottom:0.5rem;animation:fadeSlideUp 0.7s 0.1s ease both}
+  h1.hero-name span{color:var(--accent);font-style:italic}
+  .hero-title{font-size:clamp(1rem,2vw,1.35rem);color:rgba(245,244,239,0.55);font-weight:300;letter-spacing:0.06em;margin-bottom:2rem;animation:fadeSlideUp 0.7s 0.2s ease both}
+  .hero-title strong{color:var(--accent2);font-weight:700;font-size:clamp(1.1rem,2.2vw,1.5rem);letter-spacing:0.04em}
+  .hero-points{display:flex;flex-direction:column;gap:0.55rem;margin-bottom:2rem;animation:fadeSlideUp 0.7s 0.25s ease both}
+  .hpoint{
+    display:inline-flex;align-items:center;gap:0.6rem;
+    font-size:0.92rem;color:rgba(245,244,239,0.75);
+    font-weight:400;letter-spacing:0.02em;
+  }
+  .hero-desc{max-width:500px;font-size:1rem;line-height:1.78;color:rgba(245,244,239,0.7);margin-bottom:3rem;animation:fadeSlideUp 0.7s 0.3s ease both}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeSlideUp 0.7s 0.4s ease both}
+  .btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:var(--accent);color:var(--white);padding:0.9rem 2rem;border-radius:50px;font-weight:600;text-decoration:none;font-size:0.9rem;transition:all 0.25s}
+  .btn-primary:hover{background:var(--accent2);color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,77,0,0.3)}
+  .btn-outline{display:inline-flex;align-items:center;gap:0.5rem;border:1.5px solid rgba(245,244,239,0.3);color:var(--paper);padding:0.9rem 2rem;border-radius:50px;font-weight:500;text-decoration:none;font-size:0.9rem;transition:all 0.25s}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .hero-float{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:1;animation:floatBob 6s ease-in-out infinite}
+  .hero-card{width:260px;max-width:260px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:20px;backdrop-filter:blur(20px);padding:0.9rem}
+  .hero-card-avatar{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--blue));display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:white;margin-bottom:0.5rem}
+  .hero-card h3{font-size:0.9rem;margin-bottom:0.1rem}
+  .hero-card p{font-size:0.7rem;color:rgba(245,244,239,0.5);margin-bottom:0.6rem}
+  .skill-pills{display:flex;flex-wrap:wrap;gap:0.3rem}
+  .pill{background:rgba(255,77,0,0.12);border:1px solid rgba(255,77,0,0.25);color:var(--accent);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.72rem;font-family:var(--font-mono)}
+  .pill.blue{background:rgba(67,97,238,0.12);border-color:rgba(67,97,238,0.3);color:#7b8ff5}
+  .pill.teal{background:rgba(0,201,167,0.1);border-color:rgba(0,201,167,0.25);color:var(--teal)}
+  .scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:fadeSlideUp 1s 0.8s ease both}
+  .scroll-hint span{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,244,239,0.35)}
+  .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(255,77,0,0.6),transparent);animation:scrollAnim 1.5s ease-in-out infinite}
+
+  /* SECTIONS */
+  section{padding:7rem 4rem}
+  .section-label{font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
+  .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent)}
+  h2.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);margin-bottom:1.5rem;line-height:1.1}
+  h2.section-title em{color:var(--accent);font-style:italic}
+
+  /* ABOUT */
+  #about{background:linear-gradient(180deg,var(--ink) 0%,#0d0d1a 100%);background-attachment:fixed}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+  .about-text p strong{color:var(--paper);font-weight:600}
+  .work-badge{display:inline-flex;align-items:center;gap:0.7rem;background:linear-gradient(135deg,rgba(255,190,11,0.08),rgba(67,97,238,0.08));border:1px solid rgba(255,190,11,0.22);padding:1rem 1.4rem;border-radius:12px;margin-top:1rem;font-size:0.88rem}
+  .work-badge .live{color:var(--accent2);font-weight:600}
+  .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  .stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.5rem;transition:all 0.3s}
+  .stat-card:hover{background:rgba(255,77,0,0.08);border-color:rgba(255,77,0,0.2);transform:translateY(-4px)}
+  .stat-num{font-family:var(--font-display);font-size:2.5rem;font-weight:700;color:var(--accent);line-height:1;margin-bottom:0.5rem}
+  .stat-label{font-size:0.85rem;color:rgba(245,244,239,0.55);letter-spacing:0.04em}
+
+  /* SKILLS */
+  #skills{background:#0d0d1a}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+  .skill-category{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:2rem;transition:all 0.35s;position:relative;overflow:hidden}
+  .skill-category::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(255,77,0,0.08),transparent 70%);opacity:0;transition:opacity 0.3s}
+  .skill-category:hover{border-color:rgba(255,77,0,0.25);transform:translateY(-5px)}.skill-category:hover::before{opacity:1}
+  .cat-icon{font-size:2rem;margin-bottom:1rem}
+  .cat-title{font-size:1rem;font-weight:600;margin-bottom:1.2rem;color:var(--paper)}
+  .skill-bars{display:flex;flex-direction:column;gap:0.9rem}
+  .skill-row{display:flex;flex-direction:column;gap:0.35rem}
+  .skill-meta{display:flex;justify-content:space-between;font-size:0.8rem;color:rgba(245,244,239,0.6)}
+  .bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+
+  /* EXPERIENCE */
+  #experience{background:linear-gradient(180deg,#0d0d1a,var(--ink))}
+  .timeline{position:relative;margin-top:3rem}
+  .timeline::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),transparent)}
+  .timeline-item.visible{opacity:1;transform:translateX(0)}
+  .timeline-dot{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--blue));display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;z-index:1;flex-shrink:0;box-shadow:0 0 20px rgba(255,77,0,0.3)}
+  .timeline-content{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.8rem;flex:1;transition:all 0.3s}
+  .timeline-content:hover{border-color:rgba(255,77,0,0.2);background:rgba(255,77,0,0.04)}
+  .timeline-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem}
+  .timeline-role{font-size:1.1rem;font-weight:600;color:var(--paper)}
+  .timeline-company{color:var(--accent);font-weight:500;font-size:0.92rem;margin-top:0.2rem}
+  .timeline-period{font-family:var(--font-mono);font-size:0.75rem;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.2);color:var(--teal);padding:0.3rem 0.7rem;border-radius:8px;white-space:nowrap}
+  .timeline-desc{font-size:0.9rem;line-height:1.75;color:rgba(245,244,239,0.65)}
+  .timeline-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}
+  .tag{font-family:var(--font-mono);font-size:0.7rem;background:rgba(67,97,238,0.1);border:1px solid rgba(67,97,238,0.2);color:#8b9ff7;padding:0.25rem 0.65rem;border-radius:6px}
+
+  /* PROJECTS */
+  #projects{background:var(--ink)}
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:3rem}
+  .project-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:2rem;position:relative;overflow:hidden;transition:all 0.35s cubic-bezier(0.4,0,0.2,1)}
+  .project-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:20px}
+  .project-card:nth-child(1)::before{background:radial-gradient(circle at top left,rgba(255,77,0,0.1),transparent 70%)}
+  .project-card:nth-child(2)::before{background:radial-gradient(circle at top left,rgba(67,97,238,0.1),transparent 70%)}
+  .project-card:nth-child(3)::before{background:radial-gradient(circle at top left,rgba(0,201,167,0.1),transparent 70%)}
+  .project-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,0.15)}.project-card:hover::before{opacity:1}
+  .project-num{font-family:var(--font-display);font-size:4rem;font-weight:700;color:rgba(255,255,255,0.04);position:absolute;top:1rem;right:1.5rem;line-height:1}
+  .project-icon{font-size:2.2rem;margin-bottom:1.2rem}
+  .project-title{font-size:1.2rem;font-weight:600;margin-bottom:0.8rem;color:var(--paper)}
+  .project-desc{font-size:0.88rem;line-height:1.72;color:rgba(245,244,239,0.6);margin-bottom:1.5rem}
+  .project-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;letter-spacing:0.08em;color:var(--accent);text-decoration:none;font-weight:500;transition:gap 0.2s}
+  .project-link:hover{gap:0.8rem}
+
+  /* EDUCATION & CERTIFICATES */
+  #education{background:#0d0d1a}
+  .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3rem}
+  .edu-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:2rem;transition:all 0.3s}
+  .edu-card:hover{border-color:rgba(255,190,11,0.3);transform:translateY(-4px);background:rgba(255,190,11,0.04)}
+  .edu-badge{display:inline-flex;align-items:center;background:rgba(255,190,11,0.1);border:1px solid rgba(255,190,11,0.25);color:var(--accent2);padding:0.3rem 0.8rem;border-radius:8px;font-size:0.72rem;font-family:var(--font-mono);margin-bottom:1.2rem}
+  .edu-degree{font-size:1rem;font-weight:600;margin-bottom:0.4rem}
+  .edu-inst{font-size:0.85rem;color:rgba(245,244,239,0.5);margin-bottom:0.3rem}
+  .edu-score{font-family:var(--font-mono);font-size:0.75rem;color:var(--teal);margin-top:0.4rem}
+  .offer-card{background:linear-gradient(135deg,rgba(255,190,11,0.06),rgba(67,97,238,0.06));border:1.5px solid rgba(255,190,11,0.28);border-radius:20px;padding:2rem;transition:all 0.3s;position:relative;overflow:hidden}
+  .offer-card::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,190,11,0.12),transparent 70%);pointer-events:none}
+  .offer-card:hover{border-color:rgba(255,190,11,0.5);transform:translateY(-4px)}
+  .offer-company{font-size:1rem;font-weight:700;color:var(--accent2);margin-bottom:0.3rem}
+  .offer-role{font-size:0.9rem;color:rgba(245,244,239,0.75);margin-bottom:0.9rem;font-weight:500}
+  .offer-detail{font-size:0.78rem;color:rgba(245,244,239,0.42);font-family:var(--font-mono);margin-bottom:0.3rem}
+  .cert-card{background:rgba(255,255,255,0.03);border:1px solid rgba(0,201,167,0.18);border-radius:20px;padding:2rem;transition:all 0.3s}
+  .cert-card:hover{border-color:rgba(0,201,167,0.4);transform:translateY(-4px);background:rgba(0,201,167,0.04)}
+  .cert-badge{display:inline-flex;align-items:center;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);color:var(--teal);padding:0.3rem 0.8rem;border-radius:8px;font-size:0.72rem;font-family:var(--font-mono);margin-bottom:1.2rem}
+  .cert-title{font-size:0.95rem;font-weight:600;margin-bottom:0.4rem}
+  .cert-issuer{font-size:0.82rem;color:rgba(245,244,239,0.42)}
+
+  /* CONTACT */
+  #contact{background:linear-gradient(180deg,#0d0d1a,#0a0a0f);text-align:center}
+  .contact-inner{max-width:600px;margin:0 auto}
+  .contact-tagline{font-size:1rem;color:rgba(245,244,239,0.55);margin-bottom:3rem;line-height:1.8}
+  .contact-links{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem}
+  .contact-btn{display:inline-flex;align-items:center;gap:0.6rem;padding:0.9rem 1.8rem;border-radius:50px;text-decoration:none;font-weight:500;font-size:0.88rem;transition:all 0.25s}
+  .contact-btn.primary{background:var(--accent);color:white}
+  .contact-btn.primary:hover{background:var(--accent2);color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,77,0,0.3)}
+  .contact-btn.ghost{border:1.5px solid rgba(255,255,255,0.2);color:var(--paper)}
+  .contact-btn.ghost:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-2px)}
+  .available-badge{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);color:var(--teal);padding:0.6rem 1.4rem;border-radius:40px;font-size:0.82rem;margin-top:1rem}
+  .available-badge .dot{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+
+  footer{padding:2rem 4rem;text-align:center;border-top:1px solid rgba(255,255,255,0.06);font-size:0.8rem;color:rgba(245,244,239,0.3);font-family:var(--font-mono)}
+  footer span{color:var(--accent)}
+
+  @media(max-width:768px){
+    nav{padding:1rem 1.5rem}.nav-links{display:none}
+    section{padding:5rem 1.5rem}#hero{padding:0 1.5rem}
+    .about-grid{grid-template-columns:1fr}.hero-float{display:none}
+    h1.hero-name{font-size:3rem}footer{padding:2rem 1.5rem}
+  }
+
+  /* Ensure high contrast on dark background */
+  /* User-supplied overrides to guarantee visibility */
+  body {
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('./bg.jpg');
+    background-color: #0b0a13 !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #ffffff !important;
+  }
+
+  section, div, p, h1, h2, h3, h4, span {
+    color: inherit !important;
+  }
+
+  h1, h2, h3, .section-title {
+    color: #ffffff !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-logo" id="resumeBtn" title="View Resume"><img src="./avatar-ds.png" alt="Profile"></button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dineshsaini0521@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <h1 class="hero-name">Dinesh<br><span>Kumar.</span></h1>
+    <p class="hero-title"><strong>Web Developer</strong></p>
+    <div class="hero-points">
+      <div class="hpoint">🚀 Web Frontend Builder — HTML, CSS, Node.js</div>
+      <div class="hpoint">🐍 Python Intern @ Codec Technologies</div>
+      <div class="hpoint">🎯 Fast Learner · Strong Communicator · Team Player</div>
+    </div>
+    <p class="hero-desc">CSE Student at JECRC University, Jaipur — building real, functional web apps using JavaScript, Node.js, and Python. Open to internship and entry-level opportunities.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View My Work →</a>
+      <a href="#contact" class="btn-outline">Let's Connect</a>
+    </div>
+  </div>
+  <div class="hero-float">
+    <div class="hero-card">
+      <div class="hero-card-avatar"><img src="./avatar-ds.png" alt="Dinesh"></div>
+      <h3>Dinesh Kumar</h3>
+      <p>B.Tech CSE · JECRC University, Jaipur</p>
+      <div class="skill-pills">
+        <span class="pill">HTML</span>
+        <span class="pill blue">JavaScript</span>
+        <span class="pill teal">CSS</span>
+        <span class="pill blue">Node.js</span>
+        <span class="pill">Python</span>
+        <span class="pill teal">Express.js</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 · About Me</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 class="section-title reveal">Building things<br>that <em>matter.</em></h2>
+      <p class="reveal reveal-delay-1">Hi! I'm <strong>Dinesh Kumar</strong>, a Computer Science Engineering student at JECRC University, Jaipur. I'm a highly motivated, fast and dedicated learner with a strong foundation in web development and exceptional communication skills.</p>
+      <p class="reveal reveal-delay-2">I believe in <strong>learning by building</strong> — every project pushes me further. I have a strong team-player attitude and thrive in environments that challenge me to perform at my best. I'm actively seeking <strong>internship and job opportunities</strong> to grow and contribute.</p>
+      <div class="work-badge reveal reveal-delay-3">
+        <span style="font-size:1.2rem">🏢</span>
+        <span><span class="live">Python Developer Intern @ Codec Technologies</span> · Jan – Jun 2026</span>
+      </div>
+    </div>
+    <div class="about-stats reveal reveal-delay-1">
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Technologies Learned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">NPTEL Certificates</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Curiosity &amp; Drive</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">02 · Skills</div>
+  <h2 class="section-title reveal">My <em>Skills</em></h2>
+  <div class="skills-grid">
+    <div class="skill-category reveal">
+      <div class="cat-icon">🌐</div>
+      <div class="cat-title">Frontend</div>
+      <div class="skill-bars">
+        <div class="skill-row">
+          <div class="skill-meta"><span>HTML</span><span>90%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="90"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>CSS</span><span>85%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>JavaScript</span><span>78%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="78"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-1">
+      <div class="cat-icon">⚙️</div>
+      <div class="cat-title">Backend</div>
+      <div class="skill-bars">
+        <div class="skill-row">
+          <div class="skill-meta"><span>Node.js</span><span>65%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="65"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>Express.js</span><span>55%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="55"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>Python</span><span>70%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="70"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-2">
+      <div class="cat-icon">🤝</div>
+      <div class="cat-title">Soft Skills</div>
+      <div class="skill-bars">
+        <div class="skill-row">
+          <div class="skill-meta"><span>Communication</span><span>85%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>Leadership</span><span>88%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="88"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-meta"><span>Teamwork &amp; Adaptability</span><span>92%</span></div>
+          <div class="bar"><div class="bar-fill" data-width="92"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal">03 · Experience</div>
+  <h2 class="section-title reveal">Where I've <em>Worked</em></h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"><span style="font-weight: 700; font-size: 0.6rem; letter-spacing: -0.5px;">PY</span></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-role">Python Developer Intern</div>
+            <div class="timeline-company">Codec Technologies — Global IT &amp; Business Consultancy (27+ Countries)</div>
+          </div>
+          <span class="timeline-period">Jan 2026 – Jun 2026</span>
+        </div>
+        <p class="timeline-desc">Selected for a 6-month internship at Codec Technologies — an AICTE-registered, ISO 9001-certified global platform operating across 27+ countries. Gaining immersive, industry-level knowledge through assigned real projects. Exceptional performance may qualify for a scholarship award based on weekly reviews by Project Heads. Hybrid / India.</p>
+        <div class="timeline-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Project Work</span>
+          <span class="tag">Hybrid / India</span>
+          <span class="tag">AICTE Registered</span>
+          <span class="tag">ISO 9001</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🎓</div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-role">B.Tech — Computer Science Engineering</div>
+            <div class="timeline-company">JECRC University, Jaipur</div>
+          </div>
+          <span class="timeline-period">2022 – 2026</span>
+        </div>
+        <p class="timeline-desc">Pursuing a four-year degree in CSE with focus on web technologies, data structures, OOP, and database management. Building real projects alongside academics to stay industry-ready. Current CGPA: 7.0.</p>
+        <div class="timeline-tags">
+          <span class="tag">Web Dev</span><span class="tag">DSA</span><span class="tag">OOP</span><span class="tag">DBMS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal">04 · Projects</div>
+  <h2 class="section-title reveal">Things I've <em>Built</em></h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-icon">👨🏻‍🎓</div>
+      <h3 class="project-title">Student Marks Prediction System </h3>
+      <p class="project-desc">Advanced system that predicts student marks using machine learning algorithms, analyzing historical performance data, learning patterns, and classroom participation. Provides accurate grade forecasts and personalized improvement recommendations for better academic planning.</p>
+      <div class="timeline-tags" style="margin-bottom:1.2rem">
+        <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span>
+      </div>
+      <a href="#" class="project-link">Jan 2024 · View Project →</a>
+    </div>
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-num">02</div>
+      <div class="project-icon">🛒</div>
+      <h3 class="project-title">Ninjacart</h3>
+      <p class="project-desc">Full-stack e-commerce platform featuring user registration &amp; login, product catalog, search filter, shopping cart, and order history. Includes a demo payment gateway and an admin panel to manage products and orders. Fully responsive across mobile, tablet, and desktop.</p>
+      <div class="timeline-tags" style="margin-bottom:1.2rem">
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">MongoDB</span>
+      </div>
+      <a href="#" class="project-link">Oct 2025 · View Project →</a>
+    </div>
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-num">03</div>
+      <div class="project-icon">🎓</div>
+      <h3 class="project-title">Personal Portfolio Website</h3>
+      <p class="project-desc">A fully responsive animated personal portfolio showcasing projects, skills, and experience. Features smooth scroll animations, a custom cursor, glassmorphism UI elements, and a clean professional design to make a strong first impression.</p>
+      <div class="timeline-tags" style="margin-bottom:1.2rem">
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+      </div>
+      <a href="#" class="project-link">2026 · View Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTIFICATES -->
+<section id="education">
+  <div class="section-label reveal">05 · Education &amp; Certificates</div>
+  <h2 class="section-title reveal">My <em>Foundations</em></h2>
+  <div class="edu-grid">
+    <!-- Education -->
+    <div class="edu-card reveal">
+      <div class="edu-badge">🎓 2022 – 2026</div>
+      <div class="edu-degree">B.Tech — Computer Science Engineering</div>
+      <div class="edu-inst">JECRC University, Jaipur, Rajasthan</div>
+      <div class="edu-score">CGPA: 7.0</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div class="edu-badge">📘 2020 – 2021</div>
+      <div class="edu-degree">Senior Secondary — Class 12th</div>
+      <div class="edu-inst">Bhartiya Public School · CBSE Board</div>
+      <div class="edu-score">74% · Science Stream (PCM)</div>
+    </div>
+    <div class="edu-card reveal reveal-delay-2">
+      <div class="edu-badge">📗 2018 – 2019</div>
+      <div class="edu-degree">Secondary — Class 10th</div>
+      <div class="edu-inst">Bhartiya Public School · CBSE Board</div>
+      <div class="edu-score">80%</div>
+    </div>
+    <!-- Offer Letter -->
+    <div class="offer-card reveal">
+      <div class="edu-badge" style="background:rgba(255,190,11,0.12);border-color:rgba(255,190,11,0.35);color:var(--accent2);margin-bottom:1rem">🏆 Internship Offer Letter</div>
+      <div class="offer-company">Codec Technologies</div>
+      <div class="offer-role">Python Developer Intern · Project Intern</div>
+      <div class="offer-detail">📍 Hybrid / India &nbsp;·&nbsp; 27+ Countries Platform</div>
+      <div class="offer-detail">📅 22 Jan 2026 — 22 Jun 2026</div>
+      <div class="offer-detail">🏛️ AICTE Registered · ISO 9001 Certified</div>
+      <div class="offer-detail" style="margin-top:0.4rem">🔖 NCS ID: E19E86-0116588288923</div>
+    </div>
+    <!-- NPTEL 1 -->
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-badge">🏅 NPTEL Certificate</div>
+      <div class="cert-title">Leadership &amp; Team Effectiveness</div>
+      <div class="cert-issuer">National Programme on Technology Enhanced Learning · IIT</div>
+    </div>
+    <!-- NPTEL 2 -->
+    <div class="cert-card reveal reveal-delay-2">
+      <div class="cert-badge">🏅 NPTEL Certificate</div>
+      <div class="cert-title">Management of Products &amp; Brands</div>
+      <div class="cert-issuer">National Programme on Technology Enhanced Learning · IIT</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label reveal" style="justify-content:center">06 · Contact</div>
+    <h2 class="section-title reveal">Let's Work <em>Together</em></h2>
+    <p class="contact-tagline reveal">I'm a motivated CSE student actively looking for <strong style="color:var(--teal)">internship and entry-level opportunities</strong>. Whether you have a project or a role in mind — I'd love to hear from you!</p>
+    <div class="contact-links reveal">
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dineshsaini0521@gmail.com" class="contact-btn primary" target="_blank">✉️ dineshsaini0521@gmail.com</a>
+      <a href="https://linkedin.com/in/Dinesh-kumar-s05" target="_blank" class="contact-btn ghost">💼 LinkedIn</a>
+      <a href="https://github.com/Dinesh0521" target="_blank" class="contact-btn ghost">🐙 GitHub</a>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:0.8rem;color:rgba(245,244,239,0.35);margin-bottom:1.5rem" class="reveal">📞 +91 76900 20870 &nbsp;·&nbsp; 📍 Sikar, Rajasthan</div>
+    <div class="available-badge reveal">
+      <span class="dot"></span>
+      Open to Internships &amp; Entry-Level Roles
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Crafted with ♥ by <span>Dinesh Kumar</span> · 2026 · Sikar, Rajasthan</p>
+</footer>
+
+<!-- RESUME MODAL -->
+<div class="resume-overlay" id="resumeOverlay">
+  <div class="resume-modal">
+    <div class="resume-header">
+      <button class="resume-close" id="resumeClose">✕</button>
+      <div class="resume-avatar"><img src="./avatar-ds.png" alt="Dinesh"></div>
+      <div class="resume-name">Dinesh Kumar</div>
+      <div class="resume-tagline">Web Developer · B.Tech CSE · JECRC University, Jaipur</div>
+      <div class="resume-contact-row">
+        <span class="resume-contact-chip">📍 Sikar, Rajasthan</span>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dineshsaini0521@gmail.com" target="_blank" style="text-decoration:none"><span class="resume-contact-chip" style="cursor:pointer">✉️ dineshsaini0521@gmail.com</span></a>
+        <span class="resume-contact-chip">📞 +91 76900 20870</span>
+        <a href="https://linkedin.com/in/Dinesh-kumar-s05" target="_blank" style="text-decoration:none"><span class="resume-contact-chip" style="cursor:pointer">💼 linkedin.com/in/Dinesh-kumar-s05</span></a>
+        <a href="https://github.com/Dinesh0521" target="_blank" style="text-decoration:none"><span class="resume-contact-chip" style="cursor:pointer">🐙 github.com/Dinesh0521</span></a>
+      </div>
+    </div>
+    <div class="resume-body">
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Professional Summary</div>
+        <p class="resume-summary">I am looking to start my career in a role where I can focus on solving problems and keeping daily operations running smoothly. I pick up new software, systems, and workflows very quickly. I am organized, detail-oriented, and ready to work hard to help the team deliver accurate results.</p>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Internship</div>
+        <div class="resume-exp-item">
+          <div class="resume-exp-top">
+            <div>
+              <div class="resume-exp-role">Python Developer Intern</div>
+              <div class="resume-exp-company">Codec Technologies — Global IT &amp; Business Consultancy (27+ Countries)</div>
+            </div>
+            <span class="resume-exp-date">Jan 2026 – Jun 2026</span>
+          </div>
+          <p class="resume-exp-desc">6-month internship as Project Intern. AICTE-registered, ISO 9001 certified global platform. Working on assigned projects and training tasks. Subject to scholarship award based on weekly performance reviews by Project Heads. Hybrid / India. NCS ID: E19E86-0116588288923.</p>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Education</div>
+        <div class="resume-edu-item">
+          <div class="resume-edu-dot"></div>
+          <div>
+            <div class="resume-edu-deg">B.Tech — Computer Science Engineering &nbsp;<span style="color:var(--teal);font-size:0.8rem">CGPA: 7.0</span></div>
+            <div class="resume-edu-inst">JECRC University, Jaipur · 2022 – 2026 (Expected)</div>
+          </div>
+        </div>
+        <div class="resume-edu-item">
+          <div class="resume-edu-dot" style="background:var(--accent2)"></div>
+          <div>
+            <div class="resume-edu-deg">Class 12th — Science (PCM) &nbsp;<span style="color:var(--teal);font-size:0.8rem">74%</span></div>
+            <div class="resume-edu-inst">Bhartiya Public School · CBSE Board · 2020–2021</div>
+          </div>
+        </div>
+        <div class="resume-edu-item">
+          <div class="resume-edu-dot" style="background:var(--blue)"></div>
+          <div>
+            <div class="resume-edu-deg">Class 10th &nbsp;<span style="color:var(--teal);font-size:0.8rem">80%</span></div>
+            <div class="resume-edu-inst">Bhartiya Public School · CBSE Board · 2018–2019</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Projects</div>
+        <div class="resume-exp-item">
+          <div class="resume-exp-top">
+            <div><div class="resume-exp-role">Student Marks Prediction System (Advanced)</div></div>
+            <span class="resume-exp-date">Jan 2024</span>
+          </div>
+          <p class="resume-exp-desc">Tracks marks, attendance &amp; skills · generates growth reports · automated alerts to students &amp; teachers · goal-setting &amp; paperless storage. Built with HTML, CSS, JavaScript.</p>
+        </div>
+        <div class="resume-exp-item" style="border-left-color:var(--blue)">
+          <div class="resume-exp-top">
+            <div><div class="resume-exp-role">E-Commerce Web App (Ninjacart)</div></div>
+            <span class="resume-exp-date">Oct 2025</span>
+          </div>
+          <p class="resume-exp-desc">User auth, product catalog, search, cart, order history, demo payment gateway, admin panel. Responsive across all devices. Stack: HTML, CSS, JS, Node.js, Express.js, MongoDB/MySQL.</p>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Certificates</div>
+        <div class="offer-badge">
+          <div class="offer-badge-icon">🏆</div>
+          <div>
+            <div class="offer-badge-title">Internship Offer Letter — Codec Technologies</div>
+            <div class="offer-badge-sub">Python Developer Intern · Hybrid / India<br>AICTE Registered · ISO 9001 Certified · Google for Education Partner<br>NCS ID: E19E86-0116588288923</div>
+            <span class="offer-badge-date">22 Jan 2026 – 22 Jun 2026</span>
+          </div>
+        </div>
+        <div class="resume-exp-item" style="border-left-color:var(--teal)">
+          <div class="resume-exp-role" style="font-size:0.88rem">NPTEL: Leadership &amp; Team Effectiveness</div>
+          <p class="resume-exp-desc" style="margin-top:0.3rem">National Programme on Technology Enhanced Learning · IIT</p>
+        </div>
+        <div class="resume-exp-item" style="border-left-color:var(--teal)">
+          <div class="resume-exp-role" style="font-size:0.88rem">NPTEL: Management of Products &amp; Brands</div>
+          <p class="resume-exp-desc" style="margin-top:0.3rem">National Programme on Technology Enhanced Learning · IIT</p>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Technical Skills</div>
+        <div class="resume-skills-grid">
+          <span class="resume-skill-tag">HTML</span>
+          <span class="resume-skill-tag">CSS</span>
+          <span class="resume-skill-tag">JavaScript</span>
+          <span class="resume-skill-tag">Node.js</span>
+          <span class="resume-skill-tag">Express.js</span>
+          <span class="resume-skill-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-sec-title">Soft Skills</div>
+        <div class="resume-skills-grid">
+          <span class="resume-skill-tag" style="color:var(--teal);border-color:rgba(0,201,167,0.25);background:rgba(0,201,167,0.08)">Communication</span>
+          <span class="resume-skill-tag" style="color:var(--teal);border-color:rgba(0,201,167,0.25);background:rgba(0,201,167,0.08)">Teamwork</span>
+          <span class="resume-skill-tag" style="color:var(--teal);border-color:rgba(0,201,167,0.25);background:rgba(0,201,167,0.08)">Leadership</span>
+          <span class="resume-skill-tag" style="color:var(--teal);border-color:rgba(0,201,167,0.25);background:rgba(0,201,167,0.08)">Adaptability</span>
+          <span class="resume-skill-tag" style="color:var(--teal);border-color:rgba(0,201,167,0.25);background:rgba(0,201,167,0.08)">Time Management</span>
+        </div>
+      </div>
+
+      <div class="resume-section" style="margin-bottom:0">
+        <div class="resume-sec-title">Availability</div>
+        <div style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.4rem">
+          <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);padding:0.6rem 1.2rem;border-radius:40px;font-size:0.85rem;color:var(--teal)">
+            <span style="width:8px;height:8px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite;display:inline-block"></span>
+            Open to Internship &amp; Entry-Level Roles
+          </div>
+          <a href="mailto:dineshsaini0521@gmail.com" class="resume-cta" style="font-size:0.8rem;padding:0.6rem 1.2rem">✉ Contact Me</a>
+        </div>
+        <button onclick="downloadResumePDF()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:0.7rem;background:linear-gradient(135deg,var(--accent),#ff7733);border:none;color:white;padding:1rem 2rem;border-radius:12px;cursor:pointer;font-size:0.95rem;font-weight:700;font-family:var(--font-body);letter-spacing:0.04em;transition:all 0.25s;box-shadow:0 6px 24px rgba(255,77,0,0.25)">
+          ⬇&nbsp; Download My Resume
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Interactive custom cursor
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+
+if (cursor && cursorRing) {
+  let lastX = 0;
+  let lastY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let isAnimating = false;
+
+  const updateCursor = () => {
+    cursor.style.left = targetX + 'px';
+    cursor.style.top = targetY + 'px';
+    cursorRing.style.left = targetX + 'px';
+    cursorRing.style.top = targetY + 'px';
+    isAnimating = false;
+  };
+
+  document.addEventListener('mousemove', (e) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+
+    if (!isAnimating) {
+      isAnimating = true;
+      requestAnimationFrame(updateCursor);
+    }
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+    cursorRing.style.opacity = '1';
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+    cursorRing.style.opacity = '0';
+  });
+}
+
+// Scroll reveal using IntersectionObserver
+const revealElements = document.querySelectorAll('.reveal');
+const timelineItems = document.querySelectorAll('.timeline-item');
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+timelineItems.forEach(el => revealObserver.observe(el));
+
+// Skill category observer for bar fills
+const skillBars = document.querySelectorAll('.bar-fill');
+const skillsSection = document.getElementById('skills');
+
+if (skillsSection && skillBars.length > 0) {
+  const skillsObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        skillBars.forEach(bar => {
+          const width = bar.getAttribute('data-width');
+          bar.style.width = width + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2
+  });
+  skillsObserver.observe(skillsSection);
+}
+
+// Resume Modal Open/Close
+const resumeBtn = document.getElementById('resumeBtn');
+const resumeOverlay = document.getElementById('resumeOverlay');
+const resumeClose = document.getElementById('resumeClose');
+
+if (resumeBtn && resumeOverlay && resumeClose) {
+  resumeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    resumeOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  resumeClose.addEventListener('click', () => {
+    resumeOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  resumeOverlay.addEventListener('click', (e) => {
+    if (e.target === resumeOverlay) {
+      resumeOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+}
+
+// Resume download - generates clean printable resume as HTML file and triggers window.print()
+function downloadResumePDF(){
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dinesh Kumar — Resume</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #222;
+    background: #f0f2f5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .topbar {
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .topbar h2 { font-size: 1.1rem; font-weight: 600; }
+  .btn-print {
+    background: #ff4d00;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: background 0.2s;
+  }
+  .btn-print:hover { background: #e04400; }
+  
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    margin: 20px auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: 240px 1fr;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    background: #f7f9fa;
+    border-right: 1px solid #eef1f2;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sidebar-header {
+    text-align: center;
+    border-bottom: 2px solid #eef1f2;
+    padding-bottom: 20px;
+  }
+  .sidebar-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff4d00, #4361ee);
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .sidebar-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+  .sidebar-name { font-size: 1.4rem; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+  .sidebar-title { font-size: 0.85rem; color: #666; font-weight: 500; }
+  
+  .sidebar-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #ff4d00;
+    border-bottom: 1px solid #eef1f2;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .info-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .info-item { font-size: 0.8rem; color: #444; line-height: 1.4; word-break: break-word; }
+  .info-label { font-weight: 600; color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 2px; }
+  
+  .skills-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-pill {
+    background: #eef1f2;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  /* Main content */
+  .main-content {
+    padding: 35px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .section-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #ff4d00;
+    border-bottom: 1px solid #eef1f2;
+    padding-bottom: 6px;
+    font-weight: 700;
+  }
+  
+  .summary-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #444;
+  }
+  
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .item-title { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; }
+  .item-subtitle { font-size: 0.85rem; color: #ff4d00; font-weight: 600; }
+  .item-date {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #eef1f2;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #555;
+    white-space: nowrap;
+  }
+  .item-desc {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #555;
+  }
+  
+  .badge-container {
+    background: #fffdf5;
+    border: 1px solid #ffe8cc;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .badge-title { font-weight: 700; color: #ff922b; font-size: 0.88rem; margin-bottom: 4px; }
+  
+  @media print {
+    body { background: white; }
+    .topbar { display: none; }
+    .page { margin: 0; box-shadow: none; width: 100%; min-height: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h2>Dinesh Kumar — Resume</h2>
+    <button class="btn-print" onclick="window.print()">Print Resume</button>
+  </div>
+  
+  <div class="page">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-avatar"><img src="./avatar-ds.png" alt="Dinesh"></div>
+        <div class="sidebar-name">Dinesh Kumar</div>
+        <div class="sidebar-title">Web Developer</div>
+      </div>
+      
+      <div>
+        <div class="sidebar-section-title">Contact</div>
+        <ul class="info-list">
+          <li class="info-item">
+            <div class="info-label">Email</div>
+            dineshsaini0521@gmail.com
+          </li>
+          <li class="info-item">
+            <div class="info-label">Phone</div>
+            +91 76900 20870
+          </li>
+          <li class="info-item">
+            <div class="info-label">Location</div>
+            Sikar, Rajasthan
+          </li>
+          <li class="info-item">
+            <div class="info-label">LinkedIn</div>
+            linkedin.com/in/Dinesh-kumar-s05
+          </li>
+          <li class="info-item">
+            <div class="info-label">GitHub</div>
+            github.com/Dinesh0521
+          </li>
+        </ul>
+      </div>
+      
+      <div>
+        <div class="sidebar-section-title">Skills</div>
+        <div class="sidebar-section-title" style="font-size:0.65rem; color:#666; margin-top:8px; border:none; padding:0;">Technical</div>
+        <div class="skills-list">
+          <span class="skill-pill">HTML5</span>
+          <span class="skill-pill">CSS3</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">Node.js</span>
+          <span class="skill-pill">Express.js</span>
+          <span class="skill-pill">Python</span>
+        </div>
+        <div class="sidebar-section-title" style="font-size:0.65rem; color:#666; margin-top:8px; border:none; padding:0;">Soft Skills</div>
+        <div class="skills-list">
+          <span class="skill-pill">Communication</span>
+          <span class="skill-pill">Teamwork</span>
+          <span class="skill-pill">Leadership</span>
+          <span class="skill-pill">Adaptability</span>
+          <span class="skill-pill">Time Mgmt</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <div class="section">
+        <div class="section-title">Profile</div>
+        <p class="summary-text">A highly motivated and enthusiastic individual eager to launch a career in technology. Possessing a strong foundational understanding of web development and relationship-building. A fast, dedicated learner with exceptional communication skills and a strong commitment to achieving measurable results. Seeking a challenging internship or entry-level role where I can apply my goal-oriented mindset and contribute immediately to team objectives.</p>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Internship</div>
+        <div class="item">
+          <div class="item-header">
+            <div>
+              <div class="item-title">Python Developer Intern</div>
+              <div class="item-subtitle">Codec Technologies</div>
+            </div>
+            <span class="item-date">Jan 2026 – Jun 2026</span>
+          </div>
+          <p class="item-desc">6-month internship as Project Intern. AICTE-registered, ISO 9001 certified global IT & Business Consultancy operating in 27+ countries. Working on assigned projects and training tasks. Subject to scholarship award based on weekly performance reviews. Hybrid / India. NCS ID: E19E86-0116588288923.</p>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Education</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="item">
+            <div class="item-header">
+              <div>
+                <div class="item-title">B.Tech in Computer Science Engineering</div>
+                <div class="item-desc">JECRC University, Jaipur</div>
+              </div>
+              <span class="item-date">2022 – 2026 (Expected)</span>
+            </div>
+            <p class="item-desc">Current CGPA: 6.5. Focusing on software engineering, web technologies, data structures, and databases.</p>
+          </div>
+          <div class="item">
+            <div class="item-header">
+              <div>
+                <div class="item-title">Senior Secondary (Class 12th) — PCM</div>
+                <div class="item-desc">Bhartiya Public School, CBSE Board</div>
+              </div>
+              <span class="item-date">2020 – 2021</span>
+            </div>
+            <p class="item-desc">Score: 74%</p>
+          </div>
+          <div class="item">
+            <div class="item-header">
+              <div>
+                <div class="item-title">Secondary (Class 10th)</div>
+                <div class="item-desc">Bhartiya Public School, CBSE Board</div>
+              </div>
+              <span class="item-date">2018 – 2019</span>
+            </div>
+            <p class="item-desc">Score: 80%</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Projects</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="item">
+            <div class="item-header">
+              <div class="item-title">Student Marks Prediction System (Advanced)</div>
+              <span class="item-date">Jan 2024</span>
+            </div>
+            <p class="item-desc">Tracks student marks, attendance, and skills to generate automated growth reports and alerts for teachers/parents. Features digital record-keeping and goal tracking. Stack: HTML, CSS, JavaScript.</p>
+          </div>
+          <div class="item">
+            <div class="item-header">
+              <div class="item-title">E-Commerce Web App</div>
+              <span class="item-date">Oct 2025</span>
+            </div>
+            <p class="item-desc">Full-stack e-commerce app with secure auth, product catalog, search filters, cart, order history, demo checkout, and admin panel. Stack: Node.js, Express, MongoDB, HTML, CSS, JS.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Certifications</div>
+        <div class="badge-container">
+          <div class="badge-title">Internship Offer Letter — Codec Technologies</div>
+          <p class="item-desc" style="font-size:0.8rem">Python Developer Intern · AICTE Registered · ISO 9001 Certified · Google for Education Partner. NCS ID: E19E86-0116588288923.</p>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <div style="flex:1; background:#f7f9fa; padding:10px; border-radius:6px; border:1px solid #eef1f2;">
+            <div style="font-weight:600; font-size:0.82rem; color:#1a1a2e;">Leadership & Team Effectiveness</div>
+            <div style="font-size:0.75rem; color:#666; margin-top:2px;">NPTEL · IIT</div>
+          </div>
+          <div style="flex:1; background:#f7f9fa; padding:10px; border-radius:6px; border:1px solid #eef1f2;">
+            <div style="font-weight:600; font-size:0.82rem; color:#1a1a2e;">Management of Products & Brands</div>
+            <div style="font-size:0.75rem; color:#666; margin-top:2px;">NPTEL · IIT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const printWindow = window.open('', '_blank');
+  if (printWindow) {
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+    }, 250);
+  } else {
+    alert("Please allow pop-ups to print the resume.");
+  }
+}
+</script>
+</body>
+</html>
